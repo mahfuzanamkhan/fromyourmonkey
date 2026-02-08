@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>from your monkey ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #c9184a;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text: #fff;
+            --bg-gradient: linear-gradient(135deg, #2b0c13 0%, #590d22 50%, #800f2f 100%);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* --- NEW: BACKGROUND IMAGE SETTINGS --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            z-index: -2; /* Puts image behind everything */
+            
+            /* CHANGE THIS FILENAME IF NEEDED */
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover;
+            
+            /* ADJUST OPACITY: 0.2 is faint, 0.5 is visible */
+            opacity: 0.3; 
+            filter: grayscale(20%); /* Adds a classy look */
+        }
+
+        /* --- 2. FLOATING HEARTS BACKGROUND --- */
+        .bg-hearts {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1; /* Floats ABOVE the photo but BEHIND text */
+            overflow: hidden;
+        }
+        
+        .heart-bg {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 77, 109, 0.5);
+            transform: rotate(45deg);
+            animation: floatUp linear infinite;
+        }
+        .heart-bg::before, .heart-bg::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .heart-bg::before { top: -20px; left: 0; }
+        .heart-bg::after { top: 0; left: -20px; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(45deg) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(45deg) scale(1); opacity: 0; }
+        }
+
+        /* --- 3. CONTAINER & GLASS CARDS --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        /* --- 4. TYPOGRAPHY & MOBILE ADJUSTMENTS --- */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #ffccd5;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.8);
+            margin-bottom: 5px;
+            animation: heartbeat 2s infinite;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.5rem; }
+            .glass-card { padding: 20px; }
+            p { font-size: 0.95rem; }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        p { font-size: 1rem; opacity: 0.9; line-height: 1.6; }
+
+        /* --- 5. PHOTO GALLERY --- */
+        .gallery-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .gallery-img {
+            flex: 0 0 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            scroll-snap-align: center;
+            border: 3px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- 6. MUSIC PLAYER --- */
+        .music-player {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .play-btn {
+            background: var(--primary);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- 7. TIMER --- */
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .time-box {
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 60px;
+        }
+        .time-val { font-size: 1.2rem; font-weight: bold; display: block; color: var(--primary); }
+        .time-label { font-size: 0.7rem; opacity: 0.7; text-transform: uppercase; }
+
+        /* --- 8. DISTANCE MAP --- */
+        .map-container {
+            margin: 20px auto;
+            width: 100%;
+            max-width: 350px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        .love-map {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.5));
+        }
+
+        /* --- 9. BUTTONS --- */
+        .btn-group {
+            position: relative;
+            height: 60px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .action-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+            font-weight: bold;
+            z-index: 100;
+        }
+        .btn-yes { 
+            background: var(--primary); 
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.6); 
+        }
+        
+        .btn-no { 
+            background: #555; 
+            position: relative; 
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-hearts" id="hearts-container"></div>
+
+    <div class="container">
+        
+        <header style="padding-top: 40px; padding-bottom: 20px;">
+            <div class="music-player">
+                <button class="play-btn" onclick="toggleMusic()">▶</button>
+                <span>Now Playing: <i>click koroo</i></span>
+            </div>
+            
+            <h1>Happy Valentines Alvira</h1>
+            <p style="letter-spacing: 2px; font-weight: 300;">YOU ARE MY TODAY AND ALL OF MY TOMORROWS JAAN</p>
+
+            <div class="glass-card" style="margin-top: 30px; padding: 20px;">
+                <div class="timer-grid" id="timer"></div>
+            </div>
+        </header>
+
+        <div class="glass-card">
+            <h2 style="font-family: 'Dancing Script'; font-size: 2.2rem; color: #ffccd5; margin-bottom: 15px;">
+                More Than Just A Date
+            </h2>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                The calendar says valentines is special... but to me <br>
+                <span style="color: var(--primary); font-weight: bold;">every day is Valentines Day with you.</span>
+                <br><br>
+                I dont love you on specific day....<br>
+                I love you in the quiet mornings, the busy afternoons and the lonely nights.<br>
+                I loved you yesterday, I love you today and I will choose you again tomorrow.
+            </p>
+        </div>
+
+        <div class="glass-card">
+            <h2 style="font-family: 'Dancing Script'; color: var(--primary); font-size: 2rem;">Our Journey</h2>
+            
+            <div class="map-container">
+                <svg viewBox="0 0 300 150" class="love-map">
+                    <line x1="60" y1="40" x2="240" y2="120" stroke="white" stroke-width="2" stroke-dasharray="5,5" opacity="0.3" />
+                    <circle cx="60" cy="40" r="5" fill="#ff4d6d" />
+                    <text x="60" y="25" fill="white" font-size="10" text-anchor="middle" font-weight="bold">DHAKA</text>
+                    <circle cx="240" cy="120" r="5" fill="#ff4d6d" />
+                    <text x="240" y="145" fill="white" font-size="10" text-anchor="middle" font-weight="bold">CHITTAGONG</text>
+                    <g>
+                        <text x="0" y="0" font-size="16" text-anchor="middle" style="filter: drop-shadow(0 0 5px #fff);">✈️</text>
+                        <animateMotion path="M60,40 L240,120" dur="2.5s" repeatCount="indefinite" rotate="auto" />
+                    </g>
+                </svg>
+            </div>
+            
+            <p style="margin-bottom: 20px;">
+                From Dhaka to Chittagong,<br>
+                <span style="color: var(--primary); font-weight: bold;">244 km</span> 
+                is just a number when my heart is always with you jaan.
+            </p>
+
+            <div style="background: white; color: #333; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <div style="background: var(--primary); padding: 10px; color: white;">
+                    <h3 style="margin: 0; font-size: 1rem; letter-spacing: 1px;">MONKEY AIRLINES ❤️🐒</h3>
+                </div>
+
+                <div style="padding: 20px; text-align: left; position: relative;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <div>
+                            <span style="font-size: 0.7rem; color: #888;">PASSENGER</span><br>
+                            <strong>Alvira</strong>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.7rem; color: #888;">FROM</span><br>
+                            <strong>Chittagong</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <span style="font-size: 0.7rem; color: #888;">DATE</span><br>
+                            <strong>Anytime</strong>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.7rem; color: #888;">DESTINATION</span><br>
+                            <strong>My Heart</strong>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; left: -10px; bottom: 45px; width: 20px; height: 20px; background: #800f2f; border-radius: 50%;"></div>
+                    <div style="position: absolute; right: -10px; bottom: 45px; width: 20px; height: 20px; background: #800f2f; border-radius: 50%;"></div>
+                </div>
+
+                <div style="border-top: 2px dashed #ccc; padding: 10px; background: #f9f9f9;">
+                    <p style="margin: 0; font-size: 0.8rem; color: #555; text-align: center;">Valid for unlimited hugs & annoyance hehehe</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem; margin-bottom: 20px;">My Promise to You</h2>
+            <p style="font-style: italic; font-size: 1.1rem; line-height: 1.8; color: #ffccd5;">
+                In a world full of noise you are my quiet melody.<br>
+                The miles between Dhaka and Chittagong are just numbers on a map<br>
+                because my soul is always right there beside you.<br>
+                <br>
+                Please take care of yourself amar jaan my kind request<br>
+                Your health and your happiness mean everything to me.<br>
+                <br>
+                <strong style="color: white; font-weight: 500; font-size: 1.2rem;">
+                    InShaAllah I am always by your side.
+                </strong><br>
+                Through every struggle and every joy, I am never leaving.
+            </p>
+        </div>
+            
+        <footer>
+            Yours always Mahfuz ❤️
+        </footer>
+
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        // --- 1. FLOATING HEARTS GENERATOR ---
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartCount = 20; 
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-bg');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 7 + 's';
+                heart.style.opacity = Math.random();
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // --- 2. COUNTDOWN TIMER ---
+        const startDate = new Date("2025-05-05").getTime(); 
+
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = `
+                <div class="time-box"><span class="time-val">${days}</span><span class="time-label">Days</span></div>
+                <div class="time-box"><span class="time-val">${hours}</span><span class="time-label">Hours</span></div>
+                <div class="time-box"><span class="time-val">${minutes}</span><span class="time-label">Mins</span></div>
+                <div class="time-box"><span class="time-val">${seconds}</span><span class="time-label">Secs</span></div>
+            `;
+        }, 1000);
+
+        // --- 3. MUSIC CONTROL ---
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.querySelector('.play-btn');
+            
+            if (music.paused) {
+                music.play();
+                btn.innerText = '⏸';
+            } else {
+                music.pause();
+                btn.innerText = '▶';
+            }
+        }
+
+        // --- 4. BUTTON LOGIC ---
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+    </script>
+</body>
+</html>
